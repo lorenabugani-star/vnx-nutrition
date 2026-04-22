@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.vnxnutrition.com.br"
+        }
+      ],
+      "destination": "/admin.html"
+    }
+  ]
+}
