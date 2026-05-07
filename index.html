@@ -1386,7 +1386,10 @@ function addPPToCart() { if(!curProd) return; addToCart(curProd.id,curProd.name,
 
 /* ═══════════ CART ═══════════ */
 function quickAdd(id) { const p=allProducts.find(x=>x.id===id); if(p) addToCart(p.id,p.name,p.price,getImg(p),1,p.flavors?.[0]||''); }
-function addComboToCart(id,name,price) { addToCart('combo-'+id,name,price,PIMGS[name.includes('Black')?'Black X':'Emagreça Já'],1,'Combo'); }
+function addComboToCart(id,name,price,imgUrl) {
+  const img = imgUrl || PIMGS[name.includes('Black')?'Black X':'Emagreça Já'];
+  addToCart('combo-'+id,name,price,img,1,'Combo');
+}
 function addToCart(id,name,price,img,qty,flavor) {
   const key=id+'-'+flavor;
   const ex=cart.find(i=>i.key===key);
@@ -1805,7 +1808,18 @@ function buildOrderConfirmationEmail(order, customer, items) {
   };
 }
 */
-
+const lay = layouts[c.name]||{badge:'KIT',visual:''};
+    // Usa imagem do banco se disponível
+    const comboVisual = c.image_url
+      ? `<img src="${c.image_url}" alt="${c.name}" style="max-height:200px;max-width:80%;object-fit:contain;filter:drop-shadow(0 12px 28px rgba(0,0,0,.7));position:relative;z-index:1">`
+      : lay.visual;
+    return `
+    <article class="offer-card" onclick="addComboToCart('${c.id}','${c.name}',${c.price})">
+      ${c.badge?`<div class="offer-save">${c.badge}</div>`:''}
+      <div class="offer-visual">
+        <div class="offer-mult-badge">${lay.badge}</div>
+        <div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:relative;z-index:1">${comboVisual}</div>
+      </div>
 /* ═══════════ PRICE SYNC ═══════════ */
 /* ═══════════ INIT ═══════════ */
 buildDots(0);
